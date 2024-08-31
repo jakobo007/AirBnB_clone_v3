@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Imported modules"""
 from models import storage
-from flask import Flask
+from flask import Flask, jsonify
 from api.v1.views import app_views
 import os
 
@@ -16,6 +16,12 @@ app.register_blueprint(app_views)
 def teardown(exception):
     """method that calls storage"""
     storage.close()
+
+
+@app.errorhandler(404)
+def error_404():
+    """Returns JSON 404 response"""
+    return jsonify({"error": "Not Found"}), 404
 
 
 if __name__ == "__main__":
